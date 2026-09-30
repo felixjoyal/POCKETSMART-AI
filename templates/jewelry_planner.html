@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block title %}Jewelry Planner{% endblock %}{% block content %}
+<section class="planner-head"><div class="container"><h1>Jewelry Budget Planner</h1><p>Use occasion, style, budget and optionally an outfit image.</p></div></section>
+<div class="container"><div class="card"><form id="jewelryForm"><label>Budget (INR)</label><input id="budget" type="number" min="1" required placeholder="15000">
+<div class="grid-2"><div><label>Occasion</label><select id="occasion"><option>Wedding</option><option>Engagement</option><option>Party</option><option>Festival</option><option>Formal</option><option>Casual</option></select></div>
+<div><label>Style</label><select id="style"><option>Elegant</option><option>Minimal</option><option>Traditional</option><option>Modern</option><option>Statement</option></select></div></div>
+<label>Preferences</label><textarea id="preferences"></textarea><label>Optional outfit image</label><input id="outfit_image" type="file" accept="image/jpeg,image/png,image/webp">
+<button class="btn" type="submit">Get recommendations</button><div class="loading">Analyzing your request...</div></form></div><div id="result" class="result"></div></div>
+<script src="/static/js/app.js"></script><script>
+document.getElementById("jewelryForm").addEventListener("submit",async function(e){e.preventDefault();
+const l=document.querySelector(".loading"),t=document.getElementById("result"),b=e.submitter;l.classList.add("show");b.disabled=true;
+const f=new FormData();f.append("budget",formValue("budget"));f.append("occasion",formValue("occasion"));f.append("style",formValue("style"));f.append("preferences",formValue("preferences"));
+const file=document.getElementById("outfit_image").files[0];if(file)f.append("outfit_image",file);
+try{const r=await fetch("/api/generate-jewelry",{method:"POST",body:f});const p=await r.json();if(!r.ok)throw new Error(p.detail||"Request failed.");renderResult(p,"result")}
+catch(e){t.innerHTML=`<div class="alert">${escapeHtml(e.message)}</div>`}finally{l.classList.remove("show");b.disabled=false}});
+</script>{% endblock %}

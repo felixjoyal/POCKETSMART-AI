@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block title %}Party Planner{% endblock %}{% block content %}
+<section class="planner-head"><div class="container"><h1>Party Budget Planner</h1><p>Plan an event without losing control of the budget.</p></div></section>
+<div class="container"><div class="card"><form id="partyForm"><div class="grid-2">
+<div><label>Total budget (INR)</label><input id="budget" type="number" min="1" required placeholder="50000"></div>
+<div><label>Number of guests</label><input id="guests" type="number" min="1" required placeholder="50"></div>
+<div><label>Event type</label><select id="event_type"><option>Birthday</option><option>Wedding</option><option>Corporate</option><option>Engagement</option><option>Other</option></select></div>
+<div><label>Venue type</label><select id="venue_type"><option>Indoor</option><option>Outdoor</option><option>Hotel</option><option>Restaurant</option></select></div></div>
+<label>What do you need?</label><div class="check-grid"><label><input id="catering" type="checkbox" checked> Catering</label><label><input id="decoration" type="checkbox" checked> Decoration</label><label><input id="entertainment" type="checkbox" checked> Entertainment</label></div>
+<label>Additional requirements</label><textarea id="notes"></textarea><button class="btn" type="submit">Generate budget plan</button><div class="loading">Generating your party plan...</div>
+</form></div><div id="result" class="result"></div></div>
+<script src="/static/js/app.js"></script><script>
+document.getElementById("partyForm").addEventListener("submit",function(e){e.preventDefault();
+postJson("/api/generate-party",{budget:Number(formValue("budget")),guests:Number(formValue("guests")),event_type:formValue("event_type"),venue_type:formValue("venue_type"),catering:document.getElementById("catering").checked,decoration:document.getElementById("decoration").checked,entertainment:document.getElementById("entertainment").checked,notes:formValue("notes")},"result",e.submitter)});
+</script>{% endblock %}

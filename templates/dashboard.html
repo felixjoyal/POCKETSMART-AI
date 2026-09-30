@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}Dashboard{% endblock %}{% block content %}
+<section class="planner-head"><div class="container"><h1>Welcome, {{ user.username }}</h1><p>Choose a planner and create a budget-aware recommendation.</p></div></section>
+<div class="container section"><div class="grid">
+<div class="card"><h2>Home</h2><p>Furniture, lighting, fans and decor.</p><a class="btn" href="/home-planner">Open planner</a></div>
+<div class="card"><h2>Party</h2><p>Venue, catering, decoration and entertainment.</p><a class="btn" href="/party-planner">Open planner</a></div>
+<div class="card"><h2>Jewelry</h2><p>Occasion and style matching with optional image input.</p><a class="btn" href="/jewelry-planner">Open planner</a></div>
+</div><div class="card" style="margin-top:22px"><h2>Recent activity</h2>
+{% if recent %}{% for row in recent %}<div class="item"><strong>{{ row.planner_type|title }} planner</strong> <span class="muted">· ₹{{ row.budget }} · {{ row.created_at }}</span></div>{% endfor %}
+<a href="/history">View all history</a>{% else %}<p class="muted">No recommendations yet.</p>{% endif %}</div></div>{% endblock %}
